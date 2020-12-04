@@ -18,11 +18,6 @@ public class Day4E2 {
     private static boolean isValid(final String passport) {
         final String[] requiredPassportFields = {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
         final String[] passportFields = passport.split(" ");
-        System.out.println("passport: " + passport);
-        for (final String passportField : passportFields) {
-            System.out.println("\tpassportfield: '" + passportField + "'");
-        }
-        System.out.println();
         
         for (final String requiredPassportField : requiredPassportFields) {
             if (!passportContainsField(passportFields, requiredPassportField)) {
@@ -36,7 +31,6 @@ public class Day4E2 {
         for (final String passportField : passportFields) {
             if (passportField.contains(requiredPassportField)) {
                 final String value = passportField.substring(requiredPassportField.length());
-                System.out.println("=======" + value + " cuz " + StringUtils.compare("2020", "2025"));
                 final boolean isValid;
                 switch (requiredPassportField) {
                     case "byr:":
