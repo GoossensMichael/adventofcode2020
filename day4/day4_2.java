@@ -1,4 +1,4 @@
-public class Day4 {
+public class Day4E2 {
 
     public static void main(String[] args) throws IOException {
         final String[] passports = Files.lines(Paths.get("/Users/mgoossens/personal/adventofcode/day4/input.txt"), StandardCharsets.UTF_8)
