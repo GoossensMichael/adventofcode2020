@@ -20,14 +20,14 @@ public class Day4E2 {
         final String[] passportFields = passport.split(" ");
         
         for (final String requiredPassportField : requiredPassportFields) {
-            if (!passportContainsField(passportFields, requiredPassportField)) {
+            if (!passportContainsValidField(passportFields, requiredPassportField)) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean passportContainsField(final String[] passportFields, final String requiredPassportField) {
+    private static boolean passportContainsValidField(final String[] passportFields, final String requiredPassportField) {
         for (final String passportField : passportFields) {
             if (passportField.contains(requiredPassportField)) {
                 final String value = passportField.substring(requiredPassportField.length());
