@@ -17,14 +17,11 @@ public class Day4E1 {
 
     private static boolean isValid(final String passport) {
         final String[] requiredPassportFields = {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
-        final String[] passportFields = passport.split("\n|\" \"");
+        final String[] passportFields = passport.split(" ");
 
         for (final String requiredPassportField : requiredPassportFields) {
             if (!passportContainsField(passportFields, requiredPassportField)) {
-                System.out.println(passport + " does not contain " + requiredPassportField);
                 return false;
-            } else {
-                System.out.println(passport + " contains " + requiredPassportField);
             }
         }
         return true;
