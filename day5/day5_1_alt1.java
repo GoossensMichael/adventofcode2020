@@ -1,3 +1,5 @@
+public class Day5E1Alt1 {
+    
     public static void main(String[] args) throws IOException {
         final List<String> seatcodes = Files.readAllLines(Paths.get("/Users/mgoossens/personal/adventofcode/day5/input.txt"), StandardCharsets.UTF_8);
 
@@ -24,3 +26,4 @@
                 )[0];
     }
     
+)
