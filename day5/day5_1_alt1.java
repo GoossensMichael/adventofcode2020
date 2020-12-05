@@ -3,7 +3,7 @@
 
         seatcodes.stream()
                 .map(seatcode -> (binarySearch(seatcode.substring(0, 7), 'F', 127) * 8) + binarySearch(seatcode.substring(7), 'L', 7))
-                .max(Comparator.reverseOrder())
+                .max(Comparator.naturalOrder())
                 .ifPresent(System.out::println);
     }
     
