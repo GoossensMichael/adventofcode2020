@@ -93,15 +93,6 @@ public class Day7E1A2 {
         public List<Bag> getOuterBags() {
             return outerBags;
         }
-        
-        public String toString() {
-            final StringBuilder result = new StringBuilder("Bag " + bagColor + " contains:\n");
-            for (final Map.Entry<Bag, Integer> bagConfig : innerBags.entrySet()) {
-                result.append(String.format("\t %s %s bag(s) \n", bagConfig.getValue(), bagConfig.getKey().bagColor));
-            }
-            result.append("\n");
-            return result.toString();
-        }
 
         public int countBags() {
             return 1 + innerBags.entrySet().stream()
