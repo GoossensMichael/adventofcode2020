@@ -7,7 +7,6 @@ public class Day8E1Alt1 {
 
         int pointer = 0, accumulator = 0;
         while (!executedInstructions.contains(pointer) && pointer < input.size()) {
-            // infinite loop is caused due to a statement that was already executed
             executedInstructions.add(pointer);
 
             System.out.println(input.get(pointer));
