@@ -32,10 +32,6 @@ public class Day8E2Alt1 {
     }
 
     private static void repair(final Map<Integer, Instruction> instructions, final Set<Integer> topDownInstructions) {
-        final Set<Integer> keys = new HashSet<Integer>() {{ addAll(instructions.keySet()); }};
-        // first line is always reachable
-        keys.remove(0);
-        
         // Make complete graph of all instructions
         // An instruction is reachable by other instructions
         // An instruction is reaches one other instruction
@@ -47,7 +43,6 @@ public class Day8E2Alt1 {
                 final Instruction nextInstruction = instructions.get(nextLine);
                 instruction.nextInstruction = nextInstruction;
                 nextInstruction.getPreviousInstructions().add(instruction);
-                keys.remove(nextLine);
             }
         });
 
