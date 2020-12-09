@@ -71,12 +71,16 @@ public class Main {
                 .collect(Collectors.toList());
         final Map<Integer, Tuple<Long, Set<Long>>> sums = new HashMap<>();
 
+        // Init the first window
         int i = 0;
         while (i < PREAMBLE) {
             addSumsForLine(i, numbers.get(i), sums);
             i++;
         }
 
+        // Check if the current number is a sum in the window
+        // If so add the number to the window
+        // If not the number is the one we are interested in
         while (i < numbers.size()) {
             final long currentNumber = numbers.get(i);
             if (isError(i, currentNumber, sums)) {
