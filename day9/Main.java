@@ -43,14 +43,20 @@ public class Main {
         int i = 0;
         long currentSum = 0L;
         final LinkedList<Tuple<Integer, Long>> summedNumbers = new LinkedList<>();
+        // Create a variable window which increases in size as long as the sum of its numbers are less than the target number.
+        // Decrease the window size when the sum of all the numbers in the window is larger than the target number.
         while (i < numbers.size()) {
             final long currentNumber = numbers.get(i);
             currentSum += currentNumber;
             summedNumbers.addFirst(new Tuple(i, currentNumber));
+            // Sum is too big, decrease the window size and adjust the sum accordingly.
+            // Oldest numbers are removed first
             while (currentSum > errorNumber) {
                 currentSum -= summedNumbers.removeLast().y;
             }
 
+            // When the sum equals the target number return the smallest and biggest number in the window
+            // Could be improved by keeping an ordered data structure in sync with the window
             if (currentSum == errorNumber) {
                 return Optional.of(new Tuple(
                         summedNumbers.stream().map(t -> t.y).min(Comparator.naturalOrder()).orElse(Long.MIN_VALUE),
