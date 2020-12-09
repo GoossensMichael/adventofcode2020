@@ -96,9 +96,6 @@ public class Main {
 
     private static boolean isError(final int line, final long number, final Map<Integer, Tuple<Long, Set<Long>>> sums) {
         for (int i = 2; i <= PREAMBLE; i ++) {
-            //            System.out.printf("%d is contained in sums of line %d?\n", number, line - i);
-            //            sums.get(line - i).y.forEach(System.out::println);
-            //            System.out.println("");
             if (sums.get(line - i).y.contains(number)) {
                 return false;
             }
@@ -107,17 +104,20 @@ public class Main {
     }
 
     private static void addSumsForLine(final Integer line, final Long number, final Map<Integer, Tuple<Long, Set<Long>>> sums) {
+        // Keep a set of sums for numbers added after the current one
         sums.putIfAbsent(line, new Tuple(number, new HashSet<>()));
+        // For each number in the previous window, except the oldest add the current number and store it as a sum
         for (int i = 1; i < PREAMBLE; i++) {
             final int targetLine = line - i;
+            // Skip when out of bounds
             if (targetLine >= 0) {
                 final Tuple<Long, Set<Long>> sumsForNumber = sums.get(targetLine);
-                //                System.out.printf("Line %d and %d are added: %d + %d = %d.\n", line, targetLine, number, sums.get(targetLine).x, sums.get(targetLine).x + number);
                 sumsForNumber.y.add(sums.get(targetLine).x + number);
             }
         }
     }
 
+    // Helper class
     private static class Tuple<X, Y> {
         final X x;
         final Y y;
