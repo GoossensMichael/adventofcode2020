@@ -27,12 +27,14 @@ public class Main {
 
     private static void arrangements(final List<Integer> adaptors) {
         final Map<Integer, Long> solutions = new HashMap<>();
+        // Start solving it as small problems for the end and use the partial solutions when going up the problem tree.
         for (int i = adaptors.size() - 1; i >= 0; i--) {
             solutions.put(adaptors.get(i), solve(adaptors.subList(i, adaptors.size()), solutions));
         }
         System.out.printf("Amount of arrangements is %d.\n", solutions.get(adaptors.get(0)));
     }
 
+    // Solves the problem for a list of adaptors that are sorted in order using solutions for adaptors that are already known to speed it up.
     private static long solve(final List<Integer> adaptors, final Map<Integer, Long> solutions) {
         if (adaptors.size() < 3) {
             return 1;
