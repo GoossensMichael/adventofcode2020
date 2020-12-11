@@ -94,7 +94,6 @@ public class MainPart2 {
     }
 
     private static boolean occupiedSeatAdjecant(final char[][] layout, final int i, final int j) {
-//        System.out.printf("Processing (%d, %d)\n", i, j);
         final int[] direction = new int[2];
         for (int x = i - 1; x <= i + 1; x++) {
             direction[0] = x - i;
