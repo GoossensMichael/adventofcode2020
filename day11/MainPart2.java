@@ -21,8 +21,8 @@ public class MainPart2 {
         final char[][] layout = rows.toArray(new char[rows.size()][rows.get(0).length]);
 
         printArray(layout);
-        final int amountOfSeatsPart1 = stabilize(layout);
-        System.out.printf("Stabilized with %d occupied seats.", amountOfSeatsPart1);
+        final int amountOfSeatsPart2 = stabilize(layout);
+        System.out.printf("Stabilized with %d occupied seats.", amountOfSeatsPart2);
     }
 
     private static int stabilize(final char[][] layout) {
