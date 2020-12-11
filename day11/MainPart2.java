@@ -28,13 +28,16 @@ public class MainPart2 {
     private static int stabilize(final char[][] layout) {
         boolean stabilized = true;
         final char[][] resultLayout = arrayCopy(layout);
+        // Loop trhough every seat
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[i].length; j++) {
+                // Check empty seat if it should become occupied.
                 if (layout[i][j] == EMPTY_SEAT) {
                     if (!occupiedSeatAdjecant(layout, i, j)) {
                         resultLayout[i][j] = OCCUPIED;
                         stabilized = false;
                     }
+                // Check occupied seat if it should become empty
                 } else if (layout[i][j] == OCCUPIED) {
                     if (fourOrMoreSeatsAdjecantOccupied(layout, i, j)) {
                         resultLayout[i][j] = EMPTY_SEAT;
@@ -68,25 +71,28 @@ public class MainPart2 {
     private static boolean fourOrMoreSeatsAdjecantOccupied(final char[][] layout, final int i, final int j) {
         int adjecantSeats = 0;
         final int[] direction = new int[2];
+        // The two for loops will iterate through all directions of the given seat at position (i, j)
         for (int x = i - 1; x <= i + 1; x++) {
             direction[0] = x - i;
             if (x >= 0 && x < layout.length) {
                 for (int y = j - 1; y <= j + 1; y++) {
                     direction[1]  = y - j;
-                        boolean seatSeen = false;
-                        int u = x;
-                        int v = y;
-                        while (u >= 0 && u < layout.length && v >= 0 && v < layout[u].length && !(u == i && v == j) && !seatSeen) {
-                            if (layout[u][v] == OCCUPIED) {
-                                adjecantSeats++;
-                            }
-                            if (layout[u][v] == FLOOR) {
-                                u += direction[0];
-                                v += direction[1];
-                            } else {
-                                seatSeen = true;
-                            }
+                    boolean seatSeen = false;
+                    // work with a copy of u and v to avoid changing x and y itself when traversing through the direction
+                    int u = x;
+                    int v = y;
+                    // Checks in place to avoid going out of the map (in that case nothing was seen.)
+                    while (u >= 0 && u < layout.length && v >= 0 && v < layout[u].length && !(u == i && v == j) && !seatSeen) {
+                        if (layout[u][v] == OCCUPIED) {
+                            adjecantSeats++;
                         }
+                        if (layout[u][v] == FLOOR) {
+                            u += direction[0];
+                            v += direction[1];
+                        } else {
+                            seatSeen = true;
+                        }
+                    }
                 }
             }
         }
@@ -95,25 +101,28 @@ public class MainPart2 {
 
     private static boolean occupiedSeatAdjecant(final char[][] layout, final int i, final int j) {
         final int[] direction = new int[2];
+        // The two for loops will iterate through all directions of the given seat at position (i, j)
         for (int x = i - 1; x <= i + 1; x++) {
             direction[0] = x - i;
             if (x >= 0 && x < layout.length) {
                 for (int y = j - 1; y <= j + 1; y++) {
                     direction[1]  = y - j;
-                        boolean seatSeen = false;
-                        int u = x;
-                        int v = y;
-                        while (u >= 0 && u < layout.length && v >= 0 && v < layout[u].length && !(u == i && v == j) && !seatSeen) {
-                            if (layout[u][v] == OCCUPIED) {
-                                return true;
-                            }
-                            if (layout[u][v] == FLOOR) {
-                                u += direction[0];
-                                v += direction[1];
-                            } else {
-                                seatSeen = true;
-                            }
+                    boolean seatSeen = false;
+                    // work with a copy of u and v to avoid changing x and y itself when traversing through the direction
+                    int u = x;
+                    int v = y;
+                    // Checks in place to avoid going out of the map (in that case nothing was seen.)
+                    while (u >= 0 && u < layout.length && v >= 0 && v < layout[u].length && !(u == i && v == j) && !seatSeen) {
+                        if (layout[u][v] == OCCUPIED) {
+                            return true;
                         }
+                        if (layout[u][v] == FLOOR) {
+                            u += direction[0];
+                            v += direction[1];
+                        } else {
+                            seatSeen = true;
+                        }
+                    }
                 }
             }
         }
