@@ -25,10 +25,7 @@ public class MainP2 {
         put('S', new int[] { 0, -1 });
         put('E', new int[] { 1, 0 });
         put('W', new int[] { -1, 0 });
-        put('F', new int[] { 1, 1 });
     }};
-
-    private static final String WIND_DIRS = "ESWN";
 
     private static final String TURN_ACTIONS = "RL";
 
@@ -39,11 +36,10 @@ public class MainP2 {
         for (final Tuple<Character, Integer> nav : navigation) {
             final char instruction = nav.instruction;
             if (MOVE_ACTIONS.containsKey(instruction)) {
-                applyMove(waypoint, coordinates, nav);
+                moveWaypoint(waypoint, nav);
             } else if (TURN_ACTIONS.indexOf(instruction) > -1) {
                 final int turns = nav.arg / 90 * ((instruction == 'R') ? 1 : -1);
                 applyTurns(turns, waypoint);
-                // The +4 is needed for negative turns (assume that 360 is the highest degree possible otherwise the +4 solution is not sufficient
                 System.out.printf("Turned waypoint to (%d, %d).\n", waypoint[0], waypoint[1]);
             } else if (instruction == 'F') {
                 applyMove(waypoint, coordinates, new Tuple<>(nav.instruction, nav.arg));
@@ -70,28 +66,23 @@ public class MainP2 {
             direction = -1;
         }
 
+        // Ugly but shorter way to do the matrix rotation
         for (int i = 0; i < Math.abs(turns); i++){
             final int swap = coordinates[0];
-            System.out.printf("Turning waypoint from (%d, %d) ", coordinates[0], coordinates[1]);
             coordinates[0] = coordinates[1] * direction * -1;
             coordinates[1] = swap * direction;
-            System.out.printf("to (%d, %d).\n", coordinates[0], coordinates[1]);
         }
     }
 
     public static void applyMove(final int[] waypoint, final int[] coordinates, final Tuple<Character, Integer> nav) {
-        final int[] action = MOVE_ACTIONS.getOrDefault(nav.instruction, new int[]{0, 0});
-        if (nav.instruction == 'F') {
-            System.out.printf("Moved ship %s by %d in direction (%d, %d) ", nav.instruction, nav.arg, action[0], action[1]);
-            coordinates[0] += waypoint[0] * nav.arg;
-            coordinates[1] += waypoint[1] * nav.arg;
-            System.out.printf(" changed ship coordinates to (%d, %d).\n", coordinates[0], coordinates[1]);
-        } else {
-            System.out.printf("Moved waypoint %s by %d in direction (%d, %d) ", nav.instruction, nav.arg, action[0], action[1]);
-            waypoint[0] += action[0] * nav.arg;
-            waypoint[1] += action[1] * nav.arg;
-        System.out.printf(" changed waypoint to (%d, %d).\n", waypoint[0], waypoint[1]);
-        }
+        coordinates[0] += waypoint[0] * nav.arg;
+        coordinates[1] += waypoint[1] * nav.arg;
+    }
+
+    public static void moveWaypoint(final int[] waypoint, final Tuple<Character, Integer> nav) {
+        final int[] action = MOVE_ACTIONS.get(nav.instruction);
+        waypoint[0] += action[0] * nav.arg;
+        waypoint[1] += action[1] * nav.arg;
     }
 
     private static final class Tuple<U, V> {
