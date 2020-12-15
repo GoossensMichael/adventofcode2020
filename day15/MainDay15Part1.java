@@ -9,18 +9,42 @@ import java.util.stream.IntStream;
  */
 public class MainDay15Part1 {
     public static void main(String[] args) throws IOException {
-        final int result = play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
-        //play(10, new int[] { 0, 3, 6 });
-        //play(10, new int[] { 1, 3, 2 };
-        //play(10, new int[] { 2, 1, 3 };
-        //play(10, new int[] { 1, 2, 3 };
-        //play(10, new int[] { 2, 3, 1 };
-        //play(10, new int[] { 3, 2, 1 };
-        //play(2020, new int[] { 3, 1, 2 });
+        final long begin = System.currentTimeMillis();
+        final int result = 
+//                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
+                play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+        System.out.println("Play took " + (System.currentTimeMillis() - begin) + " millis.");
         System.out.println("Result is " + result);
+
+
+        final long fastBegin = System.currentTimeMillis();
+        final int fastResult =
+                //                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
+                playFast(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+        System.out.println("Fast play took " + (System.currentTimeMillis() - fastBegin) + " millis.");
+        System.out.println("Fast result is " + fastResult);
     }
 
     public static int play(final int turns, final int[] input) {
+        final Map<Integer, Integer> spokenNumbersByTurn = new HashMap<>();
+
+        for (int i = 0; i < input.length; i++) {
+            spokenNumbersByTurn.put(input[i], i + 1);
+        }
+
+        final AtomicInteger lastSpoken = new AtomicInteger(input[input.length - 1]);
+        IntStream.range(input.length + 1, turns + 1)
+                .forEach(n -> {
+                    final int earlierTurnOfLastSpokenNumber = spokenNumbersByTurn.getOrDefault(lastSpoken.get(), n - 1);
+
+                    final int numberToSay = (earlierTurnOfLastSpokenNumber == n - 1) ? 0 : n - 1 - earlierTurnOfLastSpokenNumber;
+                    spokenNumbersByTurn.put(lastSpoken.get(), n - 1);
+                    lastSpoken.set(numberToSay);
+                });
+        return lastSpoken.get();
+    }
+
+    public static int playFast(final int turns, final int[] input) {
         final Map<Integer, int[]> spokenNumbers = new HashMap<>();
 
         for (int i = 0; i < input.length; i++) {
