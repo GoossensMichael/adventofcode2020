@@ -1,72 +1,41 @@
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 
 /**
  * Created by Michaël Goossens on 15/12/2020.
  */
 public class MainDay15Part1 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        final int[] input = new int[] { 1, 0, 18, 10, 19, 6 };
+        playGame(2020, input);
+        playGame(30_000_000, input);
+    }
+
+    private static void playGame(final int turns, final int[] input) {
         final long begin = System.currentTimeMillis();
-        final int result = 
-//                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
-                play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+        System.out.println("Going to play with input " + Arrays.toString(input) + " for " + turns + " turns.");
+        final int result = play(turns, input);
         System.out.println("Play took " + (System.currentTimeMillis() - begin) + " millis.");
         System.out.println("Result is " + result);
-
-
-        final long fastBegin = System.currentTimeMillis();
-        final int fastResult =
-                //                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
-                playFast(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
-        System.out.println("Fast play took " + (System.currentTimeMillis() - fastBegin) + " millis.");
-        System.out.println("Fast result is " + fastResult);
+        System.out.println();
     }
 
     public static int play(final int turns, final int[] input) {
-        final Map<Integer, Integer> spokenNumbersByTurn = new HashMap<>();
+        final int[] spokenNumbersByTurn = new int[turns];
 
         for (int i = 0; i < input.length; i++) {
-            spokenNumbersByTurn.put(input[i], i + 1);
+            spokenNumbersByTurn[input[i]] = i + 1;
         }
 
         final AtomicInteger lastSpoken = new AtomicInteger(input[input.length - 1]);
-        IntStream.range(input.length + 1, turns + 1)
-                .forEach(n -> {
-                    final int earlierTurnOfLastSpokenNumber = spokenNumbersByTurn.getOrDefault(lastSpoken.get(), n - 1);
+        for (int n = input.length + 1; n <= turns; n++) {
+            final int earlierTurnOfLastSpokenNumber = spokenNumbersByTurn[lastSpoken.get()];
 
-                    final int numberToSay = (earlierTurnOfLastSpokenNumber == n - 1) ? 0 : n - 1 - earlierTurnOfLastSpokenNumber;
-                    spokenNumbersByTurn.put(lastSpoken.get(), n - 1);
-                    lastSpoken.set(numberToSay);
-                });
-        return lastSpoken.get();
-    }
-
-    public static int playFast(final int turns, final int[] input) {
-        final Map<Integer, int[]> spokenNumbers = new HashMap<>();
-
-        for (int i = 0; i < input.length; i++) {
-            spokenNumbers.put(input[i], new int[] { 0, i + 1 });
+            final int numberToSay = (earlierTurnOfLastSpokenNumber == 0) ? 0 : n - 1 - earlierTurnOfLastSpokenNumber;
+            spokenNumbersByTurn[lastSpoken.get()] = n - 1;
+            lastSpoken.set(numberToSay);
         }
-
-        final AtomicInteger lastSpoken = new AtomicInteger(input[input.length - 1]);
-        IntStream.range(input.length + 1, turns + 1)
-                .forEach(n -> {
-                    final int[] spokenTurns = spokenNumbers.get(lastSpoken.get());
-
-                    final int numberToSay = (spokenTurns[0] == 0) ? 0 : spokenTurns[1] - spokenTurns[0];
-
-                    {
-                        final int[] turnsOfNumberToSay = spokenNumbers.getOrDefault(numberToSay, new int[] { 0, 0 });
-                        turnsOfNumberToSay[0] = turnsOfNumberToSay[1];
-                        turnsOfNumberToSay[1] = n;
-                        spokenNumbers.put(numberToSay, turnsOfNumberToSay);
-                    }
-
-                    lastSpoken.set(numberToSay);
-                });
         return lastSpoken.get();
     }
+    
 }
