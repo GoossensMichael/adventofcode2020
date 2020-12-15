@@ -30,10 +30,8 @@ public class MainDay15Part1 {
         final AtomicInteger lastSpoken = new AtomicInteger(input[input.length - 1]);
         for (int n = input.length + 1; n <= turns; n++) {
             final int earlierTurnOfLastSpokenNumber = spokenNumbersByTurn[lastSpoken.get()];
-
-            final int numberToSay = (earlierTurnOfLastSpokenNumber == 0) ? 0 : n - 1 - earlierTurnOfLastSpokenNumber;
             spokenNumbersByTurn[lastSpoken.get()] = n - 1;
-            lastSpoken.set(numberToSay);
+            lastSpoken.set((earlierTurnOfLastSpokenNumber == 0) ? 0 : n - 1 - earlierTurnOfLastSpokenNumber);
         }
         return lastSpoken.get();
     }
