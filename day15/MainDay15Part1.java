@@ -12,7 +12,7 @@ public class MainDay15Part1 {
         final long begin = System.currentTimeMillis();
         final int result = 
 //                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
-                play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+                play(300000000, new int[] { 1, 0, 18, 10, 19, 6 });
         System.out.println("Play took " + (System.currentTimeMillis() - begin) + " millis.");
         System.out.println("Result is " + result);
 
@@ -20,7 +20,7 @@ public class MainDay15Part1 {
         final long fastBegin = System.currentTimeMillis();
         final int fastResult =
                 //                play(2020, new int[] { 1, 0, 18, 10, 19, 6 });
-                playFast(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+                playFast(300000000, new int[] { 1, 0, 18, 10, 19, 6 });
         System.out.println("Fast play took " + (System.currentTimeMillis() - fastBegin) + " millis.");
         System.out.println("Fast result is " + fastResult);
     }
@@ -56,7 +56,12 @@ public class MainDay15Part1 {
                 .forEach(n -> {
                     final int[] spokenTurns = spokenNumbers.get(lastSpoken.get());
 
-                    final int numberToSay = (spokenTurns[0] == 0) ? 0 : spokenTurns[1] - spokenTurns[0];
+                    final int numberToSay;
+                    if (spokenTurns[0] == 0) {
+                        numberToSay = 0;
+                    } else {
+                        numberToSay = spokenTurns[1] - spokenTurns[0];
+                    }
 
                     {
                         final int[] turnsOfNumberToSay = spokenNumbers.getOrDefault(numberToSay, new int[] { 0, 0 });
