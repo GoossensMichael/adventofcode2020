@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
  */
 public class MainDay15Part1 {
     public static void main(String[] args) throws IOException {
-        play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
+        final int result = play(30000000, new int[] { 1, 0, 18, 10, 19, 6 });
         //play(10, new int[] { 0, 3, 6 });
         //play(10, new int[] { 1, 3, 2 };
         //play(10, new int[] { 2, 1, 3 };
@@ -17,6 +17,7 @@ public class MainDay15Part1 {
         //play(10, new int[] { 2, 3, 1 };
         //play(10, new int[] { 3, 2, 1 };
         //play(2020, new int[] { 3, 1, 2 });
+        System.out.println("Result is " + result);
     }
 
     public static int play(final int turns, final int[] input) {
@@ -24,7 +25,6 @@ public class MainDay15Part1 {
 
         for (int i = 0; i < input.length; i++) {
             spokenNumbers.put(input[i], new int[] { 0, i + 1 });
-            System.out.printf("Turn %d - Init number %d\n", i + 1, input[i]);
         }
 
         final AtomicInteger lastSpoken = new AtomicInteger(input[input.length - 1]);
@@ -35,14 +35,8 @@ public class MainDay15Part1 {
                     final int numberToSay;
                     if (spokenTurns[0] == 0) {
                         numberToSay = 0;
-                        if (n % 10000 == 0) {
-                            System.out.printf("Turn %d - Considering %d: First encounter = %d\n", n, lastSpoken.get(), numberToSay);
-                        }
                     } else {
                         numberToSay = spokenTurns[1] - spokenTurns[0];
-                        if (n % 10000 == 0) {
-                            System.out.printf("Turn %d - Considering %d: %d - %d = %d\n", n, lastSpoken.get(), spokenTurns[1], spokenTurns[0], numberToSay);
-                        }
                     }
 
                     {
