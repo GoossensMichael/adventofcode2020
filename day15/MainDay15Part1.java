@@ -56,12 +56,7 @@ public class MainDay15Part1 {
                 .forEach(n -> {
                     final int[] spokenTurns = spokenNumbers.get(lastSpoken.get());
 
-                    final int numberToSay;
-                    if (spokenTurns[0] == 0) {
-                        numberToSay = 0;
-                    } else {
-                        numberToSay = spokenTurns[1] - spokenTurns[0];
-                    }
+                    final int numberToSay = (spokenTurns[0] == 0) ? 0 : spokenTurns[1] - spokenTurns[0];
 
                     {
                         final int[] turnsOfNumberToSay = spokenNumbers.getOrDefault(numberToSay, new int[] { 0, 0 });
