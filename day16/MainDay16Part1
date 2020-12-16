@@ -1,0 +1,70 @@
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+/**
+ * Created by Michaël Goossens on 16/12/2020.
+ */
+public class MainDay16Part1 {
+    
+    public static void main(String[] args) throws IOException {
+        final String inputPath = "src/day16/input.txt";
+        final List<String> lines = Files.readAllLines(Paths.get(inputPath), StandardCharsets.UTF_8);
+
+        final Map<String, List<int[]>> classes = new HashMap<>();
+        
+        int i = 0;
+        while (!lines.get(i).isBlank()) {
+            final String line = lines.get(i);
+            final int colon = line.indexOf(':');
+            final String clazz = line.substring(0, colon);
+            final List<int[]> groups = Arrays.stream(line.substring(colon + 2).split(" or "))
+                    .map(group -> Arrays.stream(group.split("-")).mapToInt(Integer::parseInt).toArray())
+                    .collect(Collectors.toList());
+            classes.put(clazz, groups);
+            i++;
+        }
+        
+        i += 2;
+        final String[] myTicket = lines.get(i).split(",");
+        
+        i += 2;
+        final List<String> nearbyTicketInput = lines.subList(++i, lines.size());
+        final int[][] nearbyTickets = nearbyTicketInput.stream()
+                .map(line -> line.split(","))
+                .map(values -> Arrays.stream(values).mapToInt(Integer::parseInt).toArray())
+                .collect(Collectors.toList())
+                .toArray(new int[nearbyTicketInput.size()][]);
+        
+        final int scanningErrorRate = Arrays.stream(nearbyTickets)
+                .parallel()
+                .map(ticketValues -> sumOfInvalidValues(ticketValues, classes))
+                .reduce(0, Integer::sum);
+        System.out.printf("Scanning error rate is %d.\n", scanningErrorRate);
+                
+    }
+    
+    private static int sumOfInvalidValues(final int[] ticketValues, final Map<String, List<int[]>> classes) {
+        final AtomicInteger sum = new AtomicInteger();
+        for (final int ticketValue : ticketValues) {
+            if (classes.values().stream().allMatch(clazz -> !withinBounds(ticketValue, clazz.get(0)) && !withinBounds(ticketValue, clazz.get(1)))) {
+//                System.out.printf("Adding %d\n", ticketValue);
+                sum.addAndGet(ticketValue);
+            }
+        }
+        System.out.println();
+        return sum.get();
+    }
+    
+    private static boolean withinBounds(final int ticketValue, final int[] bounds) {
+//        System.out.printf(" (%d in [%d - %d]? %s)\n", ticketValue, bounds[0], bounds[1], (bounds[0] <= ticketValue && bounds[1] >= ticketValue));
+        return bounds[0] <= ticketValue && bounds[1] >= ticketValue;
+    }
+}
