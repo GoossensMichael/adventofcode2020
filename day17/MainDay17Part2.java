@@ -34,13 +34,6 @@ public class MainDay17Part2 {
 
         final int cycles = 6;
         for (int i = 0; i < cycles; i++) {
-            System.out.println("###########################");
-            System.out.printf("Starting cycle %d\n", i + 1);
-            System.out.println("###########################");
-            System.out.println(dimensions[0][0] + ", " + dimensions[0][1]);
-            System.out.println(dimensions[1][0] + ", " + dimensions[1][1]);
-            System.out.println(dimensions[2][0] + ", " + dimensions[2][1]);
-            System.out.println(dimensions[3][0] + ", " + dimensions[3][1]);
             dimensions = applyCycle(cubes, dimensions);
             final long count = cubes.values().stream().filter(Cube::isActive).count();
             System.out.printf("Amount of cubes active after %d cycles: %d.\n", i + 1, count);
@@ -63,7 +56,6 @@ public class MainDay17Part2 {
                         final int amountOfActiveNeighbours = amountOfActiveNeighbours(x, y, z, w, cubes);
                         final String coordsAsString = coordsToString(x, y, z, w);
 
-//                        System.out.printf("Cube %s has %d active neighbours.\n", coordsAsString, amountOfActiveNeighbours);
                         Cube cube = cubes.get(coordsAsString);
                         final boolean desiredState = determineDesiredState(cube, amountOfActiveNeighbours);
                         if (cube == null) {
@@ -81,7 +73,6 @@ public class MainDay17Part2 {
                             }
                         }
                         cube.setDesiredState(desiredState);
-//                        System.out.printf("Desired state of cube %s is %s.\n", coordsAsString, desiredState ? "Active ##############" : "Inactive");
 
                     }
                 }
@@ -93,7 +84,7 @@ public class MainDay17Part2 {
     }
 
     public static boolean determineDesiredState(final Cube cube, final int amountOfActiveNeighbours) {
-        return ((cube == null || !cube.isActive()) && amountOfActiveNeighbours == 3) || (cube != null && cube.isActive() && (amountOfActiveNeighbours == 2 || amountOfActiveNeighbours == 3));
+        return (cube != null && cube.isActive() && amountOfActiveNeighbours == 2) || amountOfActiveNeighbours == 3;
     }
 
     private static int amountOfActiveNeighbours(final int x, final int y, final int z, final int w, final Map<String, Cube> cubes) {
@@ -106,7 +97,6 @@ public class MainDay17Part2 {
                         if (i != x || j != y || k != z || l != w) {
                             final Cube cube = cubes.get(coordsToString(i, j, k, l));
                             if (cube != null && cube.isActive()) {
-//                                System.out.printf("\t%s is a neighbour of %s\n", coordsToString(i, j, k, l), coordsToString(x, y, z, w));
                                 sum++;
                             }
                         }
