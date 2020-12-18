@@ -44,6 +44,7 @@ public class MainDay18Part2 {
         return stringBuilder.append(')').toString();
     }
 
+    // Using a stack to split out every subcalculation
     private static long calculate(final String[] terms) {
         final Stack<String> stack = new Stack<>();
 
