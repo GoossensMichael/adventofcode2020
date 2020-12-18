@@ -12,6 +12,7 @@ public class MainDay18Part2 {
                 "src/input.txt";
         System.out.printf("Sum of calculation results is: %s\n", Files.lines(Paths.get(inputPath))
                 .map(MainDay18Part2::preprocess)
+                // Making sure that brackets are surrounded only by spaces to facilitate a correct split
                 .map(expression -> expression.replaceAll("\\(", "( "))
                 .map(expression -> expression.replaceAll("\\)", " )"))
                 .map(expression -> expression.split(" "))
@@ -19,6 +20,8 @@ public class MainDay18Part2 {
                 .reduce(0L, Long::sum));
     }
 
+    // Preprocessing the expressions by adding brackets everywhere to
+    // ensure + precedence.
     private static String preprocess(final String expression) {
         final StringBuilder stringBuilder = new StringBuilder("(");
 
