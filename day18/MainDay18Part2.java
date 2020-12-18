@@ -61,9 +61,7 @@ public class MainDay18Part2 {
                 default:
                     stack.add(stack.pop() + " " + term);
             }
-        }
 
-        System.out.println("###############################");
         return calculate(stack.pop());
     }
 
@@ -92,7 +90,6 @@ public class MainDay18Part2 {
             }
         }
 
-        System.out.printf("Sum of expression '%s' is %d.\n", expression, sum);
         return sum;
     }
 
