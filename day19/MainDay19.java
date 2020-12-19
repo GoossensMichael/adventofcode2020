@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainDay19 {
 
     public static void main(String[] args) throws IOException {
-        // sum of input_small is 26,335
         final String inputPath =
 //                "src/day19/input_tiny.txt";
 //                "src/day19/input_small.txt";
