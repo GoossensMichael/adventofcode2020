@@ -73,6 +73,12 @@ public class MainDay21 {
         System.out.printf("Safe ingredients appear %d times.\n", sum.get());
     }
 
+    /**
+    * The solution is pretty simple as the input records will be read line by line a map is created for each allergene mapped to the ingredients that are
+    * candidates to match the allergene. Each new food record that is processed will then intersect with this initial list until only one ingredient is left.
+    * This will be the proper matching, once a proper matching is found the ingredient in the match is removed from all other candidate lists, this process
+    * might then trigger a recursive cleanup.
+    **/
     private static Map<String, List<String>> solve(final List<Food> foods) {
         final Map<String, List<String>> ingredientsByAllergene = new HashMap<>();
 
@@ -90,6 +96,11 @@ public class MainDay21 {
         return ingredientsByAllergene;
     }
 
+    /**
+    * When a match is made a check is done whether or not only one ingredient is left as possible ingredient for an allergene.
+    * When only one ingredient remains that ingredient is removed from all other allergene matching lists as it can no longer occur there, this might
+    * also trigger a recursive cleanup. An infinite loop is avoided by checking that an ingredient exists in a matching before removing it.
+    **/
     private static void cleanupIfSingleIngredientLeft(final String allergene, final Map<String, List<String>> ingredientsByAllergene) {
         if (ingredientsByAllergene.get(allergene).size() == 1) {
             final String ingredient = ingredientsByAllergene.get(allergene).get(0);
@@ -102,6 +113,7 @@ public class MainDay21 {
         }
     }
 
+    // Helper class, which arguably could be removed.
     public static final class Food {
         private final List<String> ingredients;
         private final List<String> allergenes;
