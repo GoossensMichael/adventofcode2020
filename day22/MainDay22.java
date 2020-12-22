@@ -46,14 +46,16 @@ public class MainDay22 {
     }
 
     private static void part2(final List<PlayerDeck> playerDecks) {
+        final long begin = System.currentTimeMillis();
         final PlayerDeck recursiveCombatWinner = playRecursiveCombat(playerDecks, new AtomicInteger(1), new HashMap<>());
-        System.out.println("\n\n== Post-game results==");
-        playerDecks.forEach(playerDeck -> {
-            final String deck = playerDeck.printCards();
-            System.out.printf("%s's deck: %s\n", playerDeck.getPlayerId(), deck);
-        });
+        System.out.printf("Part 2 solved in %d ms.\n", System.currentTimeMillis() - begin);
+//        System.out.println("\n\n== Post-game results==");
+//        playerDecks.forEach(playerDeck -> {
+//            final String deck = playerDeck.printCards();
+//            System.out.printf("%s's deck: %s\n", playerDeck.getPlayerId(), deck);
+//        });
 
-        System.out.printf("Result of part1: %d.\n", calculateScore(recursiveCombatWinner));
+        System.out.printf("Result of part 2: %d.\n", calculateScore(recursiveCombatWinner));
     }
 
     private static boolean doesAPlayerHaveARecurringDeckInCurrentRound(final List<PlayerDeck> playerDecks,
@@ -70,24 +72,24 @@ public class MainDay22 {
     private static PlayerDeck playRecursiveCombat(final List<PlayerDeck> playerDecks, final AtomicInteger gameCounter,
                                                   final Map<String, PlayerDeck> memory) {
         final int thisGame = gameCounter.get();
-        System.out.printf("== Game %d ==\n", gameCounter.get());
+//        System.out.printf("== Game %d ==\n", gameCounter.get());
         int round = 1;
         final Map<String, List<String>> playerDecksForCurrentRound = new HashMap<>();
 
         while (moreThanOnePlayerInTheRunning(playerDecks)) {
-            System.out.printf("\n-- Round %d (Game %d) --\n", round, gameCounter.get());
+//            System.out.printf("\n-- Round %d (Game %d) --\n", round, gameCounter.get());
             if (doesAPlayerHaveARecurringDeckInCurrentRound(playerDecks, playerDecksForCurrentRound)) {
                 return playerDecks.get(0);
             } else {
                 playerDecks.forEach(playerDeck -> {
                     final String deck = playerDeck.printCards();
-                    System.out.printf("%s's deck: %s\n", playerDeck.getPlayerId(), deck);
+//                    System.out.printf("%s's deck: %s\n", playerDeck.getPlayerId(), deck);
                     playerDecksForCurrentRound.putIfAbsent(playerDeck.getPlayerId(), new ArrayList<>());
                     playerDecksForCurrentRound.get(playerDeck.getPlayerId()).add(deck);
                 });
                 final int[] topCardsOfEachDeck = getTopCardOfEachDeck(playerDecks);
                 if (doAllPlayersHaveAtLeastTheAmountOfCardsAsTheCardValueDrawn(topCardsOfEachDeck, playerDecks)) {
-                    System.out.println("Playing a sub-gameCounter to determine the winner...\n");
+//                    System.out.println("Playing a sub-gameCounter to determine the winner...\n");
 
                     final String memoryEntry = createMemory(playerDecks);
                     final PlayerDeck winnerOfSubGame;
@@ -105,7 +107,7 @@ public class MainDay22 {
                                         .getParentPlayerDeck();
                         memory.put(memoryEntry, winnerOfSubGame);
                     }
-                    System.out.printf("...anyway, back to gameCounter %d.\n", gameCounter.get());
+//                    System.out.printf("...anyway, back to gameCounter %d.\n", gameCounter.get());
                     final int indexOfWinningPlayer = playerDecks.indexOf(playerDecks.stream()
                             .filter(playerDeck -> playerDeck.getPlayerId().equals(winnerOfSubGame.playerId))
                             .findFirst()
@@ -114,7 +116,7 @@ public class MainDay22 {
                     IntStream.range(0, topCardsOfEachDeck.length)
                             .filter(i -> i != indexOfWinningPlayer)
                             .forEach(i -> winnerOfSubGame.getCards().add(topCardsOfEachDeck[i]));
-                    System.out.printf("%s wins round %d of gameCounter %d!\n", winnerOfSubGame.getPlayerId(), round, gameCounter.get());
+//                    System.out.printf("%s wins round %d of gameCounter %d!\n", winnerOfSubGame.getPlayerId(), round, gameCounter.get());
                 } else {
                     final int winnerIndex = getIndexOfLargest(topCardsOfEachDeck);
                     final PlayerDeck roundWinner = playerDecks.get(winnerIndex);
@@ -122,7 +124,7 @@ public class MainDay22 {
                     for (int i = topCardsOfEachDeck.length - 1; i >= 0; i--) {
                         playerDecks.get(winnerIndex).getCards().add(topCardsOfEachDeck[i]);
                     }
-                    System.out.printf("%s wins round %d of gameCounter %d!\n", roundWinner.getPlayerId(), round, gameCounter.get());
+//                    System.out.printf("%s wins round %d of gameCounter %d!\n", roundWinner.getPlayerId(), round, gameCounter.get());
                 }
             }
             round++;
@@ -132,7 +134,7 @@ public class MainDay22 {
                 .filter(playerDeck -> !playerDeck.getCards().isEmpty())
                 .findFirst()
                 .orElseThrow();
-        System.out.printf("The winner of gameCounter %d is %s!\n\n", gameCounter.get(), gameWinner.getPlayerId());
+//        System.out.printf("The winner of gameCounter %d is %s!\n\n", gameCounter.get(), gameWinner.getPlayerId());
         return gameWinner;
     }
 
@@ -144,7 +146,7 @@ public class MainDay22 {
 
     private static int[] getTopCardOfEachDeck(final List<PlayerDeck> playerDecks) {
         return playerDecks.stream()
-                .peek(playerDeck -> System.out.printf("%s plays: %d\n", playerDeck.getPlayerId(), playerDeck.getCards().peek()))
+//                .peek(playerDeck -> System.out.printf("%s plays: %d\n", playerDeck.getPlayerId(), playerDeck.getCards().peek()))
                 .mapToInt(playerDeck -> playerDeck.getCards().remove())
                 .toArray();
     }
@@ -155,10 +157,12 @@ public class MainDay22 {
     }
 
     private static void part1(final List<PlayerDeck> playerDecks) {
+        final long begin = System.currentTimeMillis();
         final PlayerDeck playerDeckOfWinner = playCombat(playerDecks);
-        System.out.printf("%s has won.\n", playerDeckOfWinner.playerId);
-        System.out.printf("Deck of winner: %s\n", playerDeckOfWinner.printCards());
-        System.out.printf("Result of part1: %d.\n", calculateScore(playerDeckOfWinner));
+        System.out.printf("Part 1 solved in %d ms.\n", System.currentTimeMillis() - begin);
+//        System.out.printf("%s has won.\n", playerDeckOfWinner.playerId);
+//        System.out.printf("Deck of winner: %s\n", playerDeckOfWinner.printCards());
+        System.out.printf("Result of part 1: %d.\n", calculateScore(playerDeckOfWinner));
     }
 
     private static int calculateScore(final PlayerDeck playerDeck) {
