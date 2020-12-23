@@ -72,19 +72,16 @@ public class MainDay23 {
     }
 
     private static Node findDestinationCup(final Node originNode, final Map<Integer, Node> nodesByLabel, final CircleList circleList) {
-        boolean stillSearching = true;
         final Node firstPickupNode = originNode.getNext();
-        // First guess.
-        Node destinationNode = nodesByLabel.get(originNode.getValue() - 1);
-        while (stillSearching) {
+
+        Node destinationNode = originNode;
+        while (destinationNode == originNode || firstPickupNode.equalsInRange(destinationNode, 3)) {
+            destinationNode = nodesByLabel.get(destinationNode.getValue() - 1);
             if (destinationNode == null) {
-                destinationNode = circleList.getLargest();
-            } else if (firstPickupNode.equalsInRange(destinationNode, 3)) {
-                destinationNode = nodesByLabel.get(destinationNode.getValue() - 1);;
-            } else {
-                stillSearching = false;
+                destinationNode = circleList.largest;
             }
         }
+        
         return destinationNode;
     }
 
