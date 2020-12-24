@@ -9,8 +9,6 @@ import java.util.stream.IntStream;
 
 public class MainDay23 {
 
-    private static final int MOVES = 100;
-
     private static final List<Integer> input_small = new ArrayList<>(Arrays.asList(3, 8, 9, 1, 2, 5, 4, 6, 7));
     private static final List<Integer> input = Arrays.asList(5, 9, 8, 1, 6, 2, 7, 3, 4);
 
@@ -32,13 +30,15 @@ public class MainDay23 {
         IntStream.range(input.stream().mapToInt(i -> i).max().orElseThrow() + 1, 1_000_000 + 1)
                 .forEach(i -> nodesByLabel.put(i, circleList.add(i)));
 
-        printPart2Solution(play(10_000_000, circleList, nodesByLabel));
+        final long begin = System.currentTimeMillis();
+        final Node result = play(10_000_000, circleList, nodesByLabel);
+        printPart2Solution(result, System.currentTimeMillis() - begin);
     }
 
-    private static void printPart2Solution(final Node nodeOne) {
+    private static void printPart2Solution(final Node nodeOne, final long duration) {
         final int nextCup = nodeOne.getNext().getValue();
         final int nextCupAfterNext = nodeOne.getNext().getNext().getValue();
-        System.out.printf("Result of part 2: %d * %d = %d", nextCup, nextCupAfterNext, Integer.toUnsignedLong(nextCup) * Integer.toUnsignedLong(nextCupAfterNext));
+        System.out.printf("Result of part 2 (took %d ms): %d * %d = %d\n", duration, nextCup, nextCupAfterNext, Integer.toUnsignedLong(nextCup) * Integer.toUnsignedLong(nextCupAfterNext));
     }
 
     private static void part1(final List<Integer> input) {
@@ -47,17 +47,19 @@ public class MainDay23 {
 
         input.forEach(i -> nodesByLabel.put(i, circleList.add(i)));
 
-        printPart1Solution(play(100, circleList, nodesByLabel));
+        final long begin = System.currentTimeMillis();
+        final Node result = play(100, circleList, nodesByLabel);
+        printPart1Solution(result, System.currentTimeMillis() - begin);
     }
 
-    private static void printPart1Solution(final Node nodeOne) {
+    private static void printPart1Solution(final Node nodeOne, final long duration) {
         final StringBuilder s = new StringBuilder();
         Node printNode = nodeOne.getNext();
         while (printNode != nodeOne) {
             s.append(printNode.getValue());
             printNode = printNode.getNext();
         }
-        System.out.println("Result of part 1: " + s.toString());
+        System.out.printf("Result of part 1 (took %d ms): %s\n", duration, s.toString());
     }
 
     private static Node play(final int rounds, final CircleList circleList, final Map<Integer, Node> nodesByLabel) {
@@ -81,7 +83,7 @@ public class MainDay23 {
                 destinationNode = circleList.largest;
             }
         }
-        
+
         return destinationNode;
     }
 
