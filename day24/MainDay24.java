@@ -1,3 +1,4 @@
+// Forgive me for this bad code - Christmas eve!
 package adventofcode.day24;
 
 import java.io.IOException;
@@ -72,7 +73,8 @@ public class MainDay24 {
                         blackTileCount++;
                     }
 
-                    if (neighbour == null || !neighbour.isBlack) {
+                    // Ok I confess not my best work but in my defence Christmas eve was starting and it actually works.
+                    if (neighbour == null || (!newTiles.containsKey(stringify(neighBourPosition)) && !neighbour.isBlack)) {
                         if (neighbour == null) {
                             neighbour = new Tile(neighBourPosition, false);
                         }
